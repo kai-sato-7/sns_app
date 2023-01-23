@@ -14,26 +14,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/feed', function () {
-    return view('feed');
-})->middleware(['auth', 'verified'])->name('feed');
-
-Route::get('/posts', function () {
-    return view('posts');
-})->middleware(['auth', 'verified'])->name('posts');
-
-Route::get('/friends', function () {
-    return view('friends');
-})->middleware(['auth', 'verified'])->name('friends');
+Route::view('/', 'welcome')
+    ->name('welcome');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::view('/feed', 'feed')
+        ->name('feed');
+    Route::view('/posts', 'posts')
+        ->name('posts');
+    Route::view('/friends', 'friends')
+        ->name('friends');
+    Route::get('/profile', [ProfileController::class, 'edit'])
+        ->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])
+        ->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])
+        ->name('profile.destroy');
 });
 
 require __DIR__.'/auth.php';
