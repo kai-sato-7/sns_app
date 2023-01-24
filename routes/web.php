@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\FriendRequestController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,6 +25,12 @@ Route::middleware('auth')->group(function () {
         ->name('posts');
     Route::view('/friends', 'friends')
         ->name('friends');
+    Route::get('/friend_requests', [FriendRequestController::class, 'view'])
+        ->name('friend_requests.view');
+    Route::patch('/friend_requests', [FriendRequestController::class, 'add'])
+        ->name('friend_requests.add');
+    Route::delete('/friend_requests', [FriendRequestController::class, 'delete'])
+        ->name('friend_requests.delete');
     Route::get('/profile', [ProfileController::class, 'edit'])
         ->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])
