@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('user_id_2')->unsigned();
             $table->foreign('user_id_2')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
+            $table->unique(['user_id_1', 'user_id_2']);
         });
     }
 

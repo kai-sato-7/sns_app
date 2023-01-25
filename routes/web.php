@@ -25,10 +25,10 @@ Route::middleware('auth')->group(function () {
         ->name('posts');
     Route::view('/friends', 'friends')
         ->name('friends');
-    Route::get('/friend_requests', [FriendRequestController::class, 'view'])
-        ->name('friend_requests.view');
-    Route::patch('/friend_requests', [FriendRequestController::class, 'add'])
-        ->name('friend_requests.add');
+    Route::get('/friend_requests', [FriendRequestController::class, 'edit'])
+        ->name('friend_requests.edit');
+    Route::patch('/friend_requests', [FriendRequestController::class, 'update'])
+        ->name('friend_requests.update');
     Route::delete('/friend_requests', [FriendRequestController::class, 'delete'])
         ->name('friend_requests.delete');
     Route::get('/profile', [ProfileController::class, 'edit'])

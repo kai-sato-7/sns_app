@@ -20,10 +20,9 @@
     </div>
 
     <x-modal name="send-friend-request" :show="$errors->addRequest->isNotEmpty()" focusable>
-        <form method="post" action="{{ route('friend_requests.add') }}" class="p-6">
+        <form method="post" action="{{ route('friend_requests.update') }}" class="p-6">
             @csrf
-            @method('put')
-
+            @method('patch')
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Send Request') }}
             </h2>
