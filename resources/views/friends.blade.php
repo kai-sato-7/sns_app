@@ -4,14 +4,40 @@
             {{ __('Friends') }}
         </h2>
     </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
-                </div>
-            </div>
-        </div>
+    
+    <div class="p-6">
+        <table class="table table-borderless">
+            <tbody>
+                @foreach ($usernames as $username)
+                <tr>
+                    <td>{{ $username }}</td>
+                    <td><x-primary-button style="font-size:1em;" x-data="{{ $username }}" x-on:click.prevent="$dispatch('open-modal', 'remove-friend-{{ $username }}')">{{ __('Remove') }}</x-primary-button></td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
+
+    @foreach ($usernames as $username)
+    <x-modal name="remove-friend-{{ $username }}" focusable>
+        <form method="post" action="{{ route('friends.destroy') }}?username={{ $username }}" class="p-6">
+            @csrf
+            @method('delete')
+            <h2 class="text-lg font-medium text-gray-900">
+                {{ __('Are you sure you want to remove your friend') }} {{ $username }}{{ __('?') }}
+            </h2>
+
+            <div class="mt-6 flex justify-end">
+                <x-secondary-button x-on:click="$dispatch('close')">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+                <x-primary-button class="ml-3">
+                    {{ __('Remove Friend') }}
+                </x-primary-button>
+            </div>
+        </form>
+    </x-modal>
+    @endforeach
+
 </x-app-layout>

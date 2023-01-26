@@ -14,7 +14,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    {{ __("You have no incoming friend requests.") }}
+                    {{ __('You have no incoming friend requests.') }}
                 </div>
             </div>
         </div>
@@ -31,14 +31,14 @@
                     @csrf
                     @method('patch')
                     <x-primary-button>
-                        Accept
+                        {{ __('Accept') }}
                     </x-primary-button>
                 </form>
                 <form method="post" action="{{ route('friend_requests.destroy') }}?username={{ $username }}">
                     @csrf
                     @method('delete')
                     <x-primary-button>
-                        Decline
+                        {{ __('Decline') }}
                     </x-primary-button>
                 </form>
             </div>
