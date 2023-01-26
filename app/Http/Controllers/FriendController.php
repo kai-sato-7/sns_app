@@ -22,15 +22,17 @@ class FriendController extends Controller
     public function update(Request $request): RedirectResponse
     {
         $id = User::where('username', $request->username)->value('id');
-        $relation = new Relation;
         if ($id < $request->user()->id) {
-            $relation->user_id_1 = $id;
-            $relation->user_id_2 = $request->user()->id;
+            Relation::create([
+                'user_id_1' => $id,
+                'user_id_2' => $request->user()->id,
+            ]);
         } else {
-            $relation->user_id_1 = $request->user()->id;
-            $relation->user_id_2 = $id;
+            Relation::create([
+                'user_id_2' => $id,
+                'user_id_1' => $request->user()->id,
+            ]);
         }
-        $relation->save();
         FriendRequest::where('outgoing_user_id', $id)->where('ingoing_user_id', $request->user()->id)->delete();
         return Redirect::route('friend_requests.edit');
     }

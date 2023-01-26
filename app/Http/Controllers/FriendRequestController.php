@@ -26,20 +26,22 @@ class FriendRequestController extends Controller
         $id = User::where('username', $request->username)->value('id');
         if (FriendRequest::where('outgoing_user_id', $id)->where('ingoing_user_id', $request->user()->id)->exists()) {
             FriendRequest::where('outgoing_user_id', $id)->where('ingoing_user_id', $request->user()->id)->delete();
-            $relation = new Relation;
             if ($id < $request->user()->id) {
-                $relation->user_id_1 = $id;
-                $relation->user_id_2 = $request->user()->id;
+                Relation::create([
+                    'user_id_1' => $id,
+                    'user_id_2' => $request->user()->id,
+                ]);
             } else {
-                $relation->user_id_1 = $request->user()->id;
-                $relation->user_id_2 = $id;
+                Relation::create([
+                    'user_id_2' => $id,
+                    'user_id_1' => $request->user()->id,
+                ]);
             }
-            $relation->save();
         } else {
-            $friend_request = new FriendRequest;
-            $friend_request->outgoing_user_id = $request->user()->id;
-            $friend_request->ingoing_user_id = $id;
-            $friend_request->save();
+            FriendRequest::create([
+                'outgoing_user_id' => $request->user()->id,
+                'ingoing_user_id' => $id,
+            ]);
         }
         return Redirect::route('friend_requests.edit');
     }
