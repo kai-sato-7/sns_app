@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FriendRequestController;
+use App\Http\Controllers\FriendController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,8 +30,10 @@ Route::middleware('auth')->group(function () {
         ->name('friend_requests.edit');
     Route::patch('/friend_requests', [FriendRequestController::class, 'update'])
         ->name('friend_requests.update');
-    Route::delete('/friend_requests', [FriendRequestController::class, 'delete'])
-        ->name('friend_requests.delete');
+    Route::delete('/friend_requests', [FriendRequestController::class, 'destroy'])
+        ->name('friend_requests.destroy');
+    Route::patch('/add_friend', [FriendController::class, 'update'])
+        ->name('friends.update');
     Route::get('/profile', [ProfileController::class, 'edit'])
         ->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])

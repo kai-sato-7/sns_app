@@ -9,6 +9,7 @@
         <x-primary-button style="font-size:1em;" x-data="" x-on:click.prevent="$dispatch('open-modal', 'send-friend-request')">{{ __('Send Friend Request') }}</x-primary-button>
     </div>
 
+    @if (count($usernames) === 0)
     <div class="py-6">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -18,6 +19,33 @@
             </div>
         </div>
     </div>
+    @else
+    @foreach ($usernames as $username)
+    <div class="py-2">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-4 text-gray-900 text-lg">
+                    {{ $username }}
+                </div>
+                <form method="post" action="{{ route('friends.update') }}?username={{ $username }}">
+                    @csrf
+                    @method('patch')
+                    <x-primary-button>
+                        Accept
+                    </x-primary-button>
+                </form>
+                <form method="post" action="{{ route('friend_requests.destroy') }}?username={{ $username }}">
+                    @csrf
+                    @method('delete')
+                    <x-primary-button>
+                        Decline
+                    </x-primary-button>
+                </form>
+            </div>
+        </div>
+    </div>
+    @endforeach
+    @endif
 
     <x-modal name="send-friend-request" :show="$errors->addRequest->isNotEmpty()" focusable>
         <form method="post" action="{{ route('friend_requests.update') }}" class="p-6">
