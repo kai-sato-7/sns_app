@@ -25,16 +25,16 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-4 text-gray-900 text-lg">
-                    {{ $username }}
+                    {{ $username }} {{ __('sent a friend request.') }}
                 </div>
-                <form method="post" action="{{ route('friends.update') }}?username={{ $username }}">
+                <form method="POST" action="{{ route('friends.update') }}?username={{ $username }}">
                     @csrf
                     @method('patch')
                     <x-primary-button>
                         {{ __('Accept') }}
                     </x-primary-button>
                 </form>
-                <form method="post" action="{{ route('friend_requests.destroy') }}?username={{ $username }}">
+                <form method="POST" action="{{ route('friend_requests.destroy') }}?username={{ $username }}">
                     @csrf
                     @method('delete')
                     <x-primary-button>
@@ -48,7 +48,7 @@
     @endif
 
     <x-modal name="send-friend-request" :show="$errors->addRequest->isNotEmpty()" focusable>
-        <form method="post" action="{{ route('friend_requests.update') }}" class="p-6">
+        <form method="POST" action="{{ route('friend_requests.update') }}" class="p-6">
             @csrf
             @method('patch')
             <h2 class="text-lg font-medium text-gray-900">
