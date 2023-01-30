@@ -18,12 +18,11 @@ class FriendController extends Controller
         $friend_ids_1 = User::select('users.*')->join('relations', 'relations.user_id_1', '=', 'users.id')->where('user_id_2', $request->user()->id)->pluck('id')->toArray();
         $friend_ids_2 = User::select('users.*')->join('relations', 'relations.user_id_2', '=', 'users.id')->where('user_id_1', $request->user()->id)->pluck('id')->toArray();
         $friend_ids = array_merge($friend_ids_1, $friend_ids_2);
-        $friend_usernames = User::select('username')->whereIn('user_id', $friend_ids)->get();
-        $posts = Post::select('id', 'user_id', 'title', 'content', 'file_name')->whereIn('user_id', $friend_ids)->get();
+        $posts = Post::select('id', 'user_id', 'title', 'content', 'file_name')->whereIn('user_id', $friend_ids)->orderBy('id', 'DESC')->get();
         foreach ($posts as $post) {
             $post->username = User::where('id', $post->user_id)->value('username');
         }
-        return view('friends', ['usernames' => $friend_usernames, 'posts' => $posts]);
+        return view('friends', ['posts' => $posts]);
     }
 
     public function update(Request $request): RedirectResponse

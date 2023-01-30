@@ -13,7 +13,7 @@ class PostController extends Controller
 {
     public function edit(Request $request): View
     {
-        $posts = Post::select('id', 'title', 'content', 'file_name')->where('user_id', $request->user()->id)->get();
+        $posts = Post::select('id', 'title', 'content', 'file_name')->where('user_id', $request->user()->id)->orderBy('id', 'DESC')->get();
         foreach ($posts as $post) {
             $post->username = $request->user()->username;
         }

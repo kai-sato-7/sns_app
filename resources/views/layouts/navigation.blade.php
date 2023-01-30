@@ -30,6 +30,12 @@
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('manage_friends')" :active="request()->routeIs('manage_friends')">
+                        {{ __('Manage Friends') }}
+                    </x-nav-link>
+                </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('friend_requests.edit')" :active="request()->routeIs('friend_requests.edit')">
                         {{ __('Friend Requests') }}
                     </x-nav-link>

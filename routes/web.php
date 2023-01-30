@@ -3,6 +3,7 @@
 use App\Http\Controllers\FeedController;
 use App\Http\Controllers\FriendRequestController;
 use App\Http\Controllers\FriendController;
+use App\Http\Controllers\ManageFriendController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +25,7 @@ Route::view('/', 'welcome')
 Route::middleware('auth')->group(function () {
     Route::get('/feed', [FeedController::class, 'edit'])
         ->name('feed.edit');
+    
     Route::view('/make_post', 'make_post')
         ->name('make_post');
     Route::get('/posts', [PostController::class, 'edit'])
@@ -32,18 +34,23 @@ Route::middleware('auth')->group(function () {
         ->name('posts.update');
     Route::delete('/posts', [PostController::class, 'destroy'])
         ->name('posts.destroy');
+
+    Route::get('/manage_friends', [ManageFriendController::class, 'edit'])
+        ->name('manage_friends');
     Route::get('/friends', [FriendController::class, 'edit'])
         ->name('friends.edit');
     Route::patch('/friends', [FriendController::class, 'update'])
         ->name('friends.update');
     Route::delete('/friends', [FriendController::class, 'destroy'])
         ->name('friends.destroy');
+    
     Route::get('/friend_requests', [FriendRequestController::class, 'edit'])
         ->name('friend_requests.edit');
     Route::patch('/friend_requests', [FriendRequestController::class, 'update'])
         ->name('friend_requests.update');
     Route::delete('/friend_requests', [FriendRequestController::class, 'destroy'])
         ->name('friend_requests.destroy');
+    
     Route::get('/profile', [ProfileController::class, 'edit'])
         ->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])
