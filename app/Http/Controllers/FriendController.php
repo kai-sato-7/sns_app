@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Post;
 use App\Models\FriendRequest;
 use App\Models\Relation;
 use Illuminate\Http\RedirectResponse;
@@ -14,9 +15,15 @@ class FriendController extends Controller
 {
     public function edit(Request $request): View
     {
-        $friend_usernames_1 = User::select('users.*')->join('relations', 'relations.user_id_1', '=', 'users.id')->where('user_id_2', $request->user()->id)->pluck('username')->toArray();
-        $friend_usernames_2 = User::select('users.*')->join('relations', 'relations.user_id_2', '=', 'users.id')->where('user_id_1', $request->user()->id)->pluck('username')->toArray();
-        return view('friends', ['usernames' => array_merge($friend_usernames_1, $friend_usernames_2)]);
+        $friend_ids_1 = User::select('users.*')->join('relations', 'relations.user_id_1', '=', 'users.id')->where('user_id_2', $request->user()->id)->pluck('id')->toArray();
+        $friend_ids_2 = User::select('users.*')->join('relations', 'relations.user_id_2', '=', 'users.id')->where('user_id_1', $request->user()->id)->pluck('id')->toArray();
+        $friend_ids = array_merge($friend_ids_1, $friend_ids_2);
+        $friend_usernames = User::select('username')->whereIn('user_id', $friend_ids)->get();
+        $posts = Post::select('id', 'user_id', 'title', 'content', 'file_name')->whereIn('user_id', $friend_ids)->get();
+        foreach ($posts as $post) {
+            $post->username = User::where('id', $post->user_id)->value('username');
+        }
+        return view('friends', ['usernames' => $friend_usernames, 'posts' => $posts]);
     }
 
     public function update(Request $request): RedirectResponse

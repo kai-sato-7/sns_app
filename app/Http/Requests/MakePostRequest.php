@@ -25,7 +25,8 @@ class MakePostRequest extends FormRequest
     public function rules()
     {
         return [
-            'text' => ['exclude_if:action,cancel', 'required', 'string', 'max:255'],
+            'title' => ['exclude_if:action,cancel', 'required', 'string', 'max:100'],
+            'content' => ['exclude_if:action,cancel', 'max:1000'],
             'file' => ['exclude_if:action,cancel', 'image'],
         ];
     }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FeedController;
 use App\Http\Controllers\FriendRequestController;
 use App\Http\Controllers\FriendController;
 use App\Http\Controllers\PostController;
@@ -21,8 +22,8 @@ Route::view('/', 'welcome')
     ->name('welcome');
 
 Route::middleware('auth')->group(function () {
-    Route::view('/feed', 'feed')
-        ->name('feed');
+    Route::get('/feed', [FeedController::class, 'edit'])
+        ->name('feed.edit');
     Route::view('/make_post', 'make_post')
         ->name('make_post');
     Route::get('/posts', [PostController::class, 'edit'])

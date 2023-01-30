@@ -13,7 +13,10 @@ class PostController extends Controller
 {
     public function edit(Request $request): View
     {
-        $posts = Post::select('text', 'image_path')->where('user_id', $request->user()->id)->get();
+        $posts = Post::select('id', 'title', 'content', 'file_name')->where('user_id', $request->user()->id)->get();
+        foreach ($posts as $post) {
+            $post->username = $request->user()->username;
+        }
         return view('posts', ['posts' => $posts]);
     }
 
@@ -27,13 +30,15 @@ class PostController extends Controller
             $file_name = $request->file->hashName();
             Post::create([
                 'user_id' => $request->user()->id,
-                'text' => $request->text,
-                'image_path' => $file_name,
+                'title' => $request->title,
+                'content' => $request->content,
+                'file_name' => $file_name,
             ]);
         } else {
             Post::create([
                 'user_id' => $request->user()->id,
-                'text' => $request->text,
+                'title' => $request->title,
+                'content' => $request->content,
             ]);
         }
         return Redirect::route('posts.edit');

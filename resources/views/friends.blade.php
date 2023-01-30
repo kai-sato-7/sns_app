@@ -40,4 +40,14 @@
     </x-modal>
     @endforeach
 
+    @foreach ($posts as $post)
+        @include('components.post', [
+            'post_id' => $post->id,
+            'username' =>$post->username,
+            'title' => $post->title,
+            'content' => $post->content,
+            'file_name' => $post->file_name,
+        ])
+    @endforeach
+
 </x-app-layout>

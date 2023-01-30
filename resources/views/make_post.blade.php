@@ -20,11 +20,13 @@
                     <form method="POST" action="{{ route('posts.update') }}" enctype="multipart/form-data">
                         @csrf
                         @method('patch')
-                        <input class="w-full" type="file" accept=".jpg,.jpeg,.png,.bmp,.gif,.svg,.webp" name="file"></input>
+                        <textarea class="block mt-2" cols="50" rows="2" maxlength="100" id="title" name="title" placeholder="Title"></textarea>
+                        <x-input-error :messages="$errors->makePost->get('title')" class="mt-2"/>
+                        <textarea class="block mt-2" cols="50" rows="5" maxlength="1000" name="content" placeholder="Text"></textarea>
+                        <x-input-error :messages="$errors->makePost->get('content')" class="mt-2"/>
+                        <input class="w-full mt-2" type="file" accept=".jpg,.jpeg,.png,.bmp,.gif,.svg,.webp" name="file"></input>
                         <x-input-error :messages="$errors->makePost->get('file')" class="mt-2"/>
-                        <textarea class="block mt-2" cols="50" rows="5" maxlength="255" name="text"></textarea>
-                        <x-input-error :messages="$errors->makePost->get('text')" class="mt-2"/>
-                        <br>
+                        <br><br>
                         <x-primary-button style="font-size:1em;" name="action" value="cancel">{{ __('Cancel') }}</x-primary-button>
                         <x-primary-button style="font-size:1em;" name="action" value="make_post">{{ __('Make Post') }}</x-primary-button>
                     </form>
