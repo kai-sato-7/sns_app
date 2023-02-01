@@ -12,7 +12,17 @@ class Relation extends Model
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
-        'user_id_1',
-        'user_id_2',
+        'user_id',
+        'friend_user_id',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function connected_user()
+    {
+        return $this->belongsTo(User::class, 'friend_user_id');
+    }
 }

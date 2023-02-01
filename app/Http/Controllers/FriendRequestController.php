@@ -15,9 +15,9 @@ class FriendRequestController extends Controller
 {
     public function edit(Request $request): View
     {
-        $joined_table = User::select('users.*')->join('friend_requests', 'friend_requests.outgoing_user_id', '=', 'users.id');
+        $usernames = $request->user()->users_sent_requests->pluck('username');
         return view('friend_requests', [
-            'usernames' => $joined_table->where('ingoing_user_id', $request->user()->id)->pluck('username'),
+            'usernames' => $usernames,
         ]);
     }
 
@@ -26,17 +26,14 @@ class FriendRequestController extends Controller
         $id = User::where('username', $request->username)->value('id');
         if (FriendRequest::where('outgoing_user_id', $id)->where('ingoing_user_id', $request->user()->id)->exists()) {
             FriendRequest::where('outgoing_user_id', $id)->where('ingoing_user_id', $request->user()->id)->delete();
-            if ($id < $request->user()->id) {
-                Relation::create([
-                    'user_id_1' => $id,
-                    'user_id_2' => $request->user()->id,
-                ]);
-            } else {
-                Relation::create([
-                    'user_id_2' => $id,
-                    'user_id_1' => $request->user()->id,
-                ]);
-            }
+            Relation::create([
+                'user_id' => $id,
+                'friend_user_id' => $request->user()->id,
+            ]);
+            Relation::create([
+                'user_id' => $id,
+                'friend_user_id' => $request->user()->id,
+            ]);
         } else {
             FriendRequest::create([
                 'outgoing_user_id' => $request->user()->id,
@@ -50,6 +47,7 @@ class FriendRequestController extends Controller
     {
         $id = User::where('username', $request->username)->value('id');
         FriendRequest::where('outgoing_user_id', $id)->where('ingoing_user_id', $request->user()->id)->delete();
+        FriendRequest::where('outgoing_user_id', $request->user()->id)->where('ingoing_user_id', $id)->delete();
         return Redirect::route('friend_requests.edit');
     }
 }

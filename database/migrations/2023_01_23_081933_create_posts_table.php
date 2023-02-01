@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('title');
-            $table->string('content')->nullable();
+            $table->string('title', 100);
+            $table->string('content', 1000)->nullable();
             $table->string('file_name')->nullable();
             $table->timestamps();
         });

@@ -7,15 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class Post extends Model
+class Reaction extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
+        'post_id',
         'user_id',
-        'title',
-        'content',
-        'file_name',
+        'like',
     ];
 
     public function user()
@@ -23,13 +22,8 @@ class Post extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function posts()
+    public function post()
     {
-        return $this->hasMany(Post::class);
-    }
-
-    public function reactions()
-    {
-        return $this->hasMany(PostReaction::class);
+        return $this->belongsTo(Post::class);
     }
 }

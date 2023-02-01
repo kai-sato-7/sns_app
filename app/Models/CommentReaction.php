@@ -12,8 +12,18 @@ class Reaction extends Model
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
-        'post_id',
+        'comment_id',
         'user_id',
         'like',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function comment()
+    {
+        return $this->belongsTo(Comment::class);
+    }
 }

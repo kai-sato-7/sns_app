@@ -15,12 +15,13 @@ class FriendController extends Controller
 {
     public function edit(Request $request): View
     {
-        $friend_ids_1 = User::select('users.*')->join('relations', 'relations.user_id_1', '=', 'users.id')->where('user_id_2', $request->user()->id)->pluck('id')->toArray();
-        $friend_ids_2 = User::select('users.*')->join('relations', 'relations.user_id_2', '=', 'users.id')->where('user_id_1', $request->user()->id)->pluck('id')->toArray();
-        $friend_ids = array_merge($friend_ids_1, $friend_ids_2);
-        $posts = Post::select('id', 'user_id', 'title', 'content', 'file_name')->whereIn('user_id', $friend_ids)->orderBy('id', 'DESC')->get();
-        foreach ($posts as $post) {
-            $post->username = User::where('id', $post->user_id)->value('username');
+        $friends = $request->user()->friends;
+        $posts = [];
+        foreach ($friends as $friend) {
+            foreach ($friend->posts as $post) {
+                $post->username = $post->user->username;
+                array_push($posts, $post->only(['id', 'username', 'title', 'content', 'file_name']));
+            }
         }
         return view('friends', ['posts' => $posts]);
     }
@@ -28,17 +29,14 @@ class FriendController extends Controller
     public function update(Request $request): RedirectResponse
     {
         $id = User::where('username', $request->username)->value('id');
-        if ($id < $request->user()->id) {
-            Relation::create([
-                'user_id_1' => $id,
-                'user_id_2' => $request->user()->id,
-            ]);
-        } else {
-            Relation::create([
-                'user_id_2' => $id,
-                'user_id_1' => $request->user()->id,
-            ]);
-        }
+        Relation::create([
+            'user_id' => $id,
+            'friend_user_id' => $request->user()->id,
+        ]);
+        Relation::create([
+            'friend_user_id' => $id,
+            'user_id' => $request->user()->id,
+        ]);
         FriendRequest::where('outgoing_user_id', $id)->where('ingoing_user_id', $request->user()->id)->delete();
         return Redirect::route('friend_requests.edit');
     }
@@ -46,11 +44,8 @@ class FriendController extends Controller
     public function destroy(Request $request): RedirectResponse
     {
         $id = User::where('username', $request->username)->value('id');
-        if ($id < $request->user()->id) {
-            Relation::where('user_id_1', $id)->where('user_id_2', $request->user()->id)->delete();
-        } else {
-            Relation::where('user_id_2', $id)->where('user_id_1', $request->user()->id)->delete();
-        }
+        Relation::where('user_id', $id)->where('friend_user_id', $request->user()->id)->delete();
+        Relation::where('friend_user_id', $id)->where('user_id', $request->user()->id)->delete();
         return Redirect::route('friends.edit');
     }
 }

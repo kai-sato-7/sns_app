@@ -15,4 +15,14 @@ class FriendRequest extends Model
         'outgoing_user_id',
         'ingoing_user_id',
     ];
+
+    public function outgoing_user()
+    {
+        return $this->belongsTo(User::class, 'outgoing_user_id');
+    }
+
+    public function ingoing_user()
+    {
+        return $this->belongsTo(Post::class, 'ingoing_user_id');
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Post;
 use App\Http\Requests\MakePostRequest;
 use Illuminate\Http\RedirectResponse;
@@ -13,7 +14,7 @@ class PostController extends Controller
 {
     public function edit(Request $request): View
     {
-        $posts = Post::select('id', 'title', 'content', 'file_name')->where('user_id', $request->user()->id)->orderBy('id', 'DESC')->get();
+        $posts = $request->user()->posts->sortByDesc('created_at')->only(['id', 'user_id', 'title', 'content', 'file_name']);
         foreach ($posts as $post) {
             $post->username = $request->user()->username;
         }

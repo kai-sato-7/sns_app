@@ -7,7 +7,7 @@
             </h1>
             <div class="py-2">
                 @if (!empty($file_name))
-                <img src="storage/images/{{ $post->file_name }}" style="margin:auto;" width="500rem">
+                <img src="storage/images/{{ $file_name }}" style="margin:auto;" width="500rem">
                 @endif
                 @if (!empty($content))
                 {{ $content }}

@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('relations', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id_1')->unsigned();
-            $table->foreign('user_id_1')->references('id')->on('users')->onDelete('cascade');
-            $table->integer('user_id_2')->unsigned();
-            $table->foreign('user_id_2')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('friend_user_id')->unsigned();
+            $table->foreign('friend_user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
-            $table->unique(['user_id_1', 'user_id_2']);
+            $table->unique(['user_id', 'friend_user_id']);
         });
     }
 
