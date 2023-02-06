@@ -5,6 +5,7 @@ use App\Http\Controllers\FriendRequestController;
 use App\Http\Controllers\FriendController;
 use App\Http\Controllers\ManageFriendController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\PostReactionController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +35,9 @@ Route::middleware('auth')->group(function () {
         ->name('posts.update');
     Route::delete('/posts', [PostController::class, 'destroy'])
         ->name('posts.destroy');
+
+    Route::patch('/post_reactions', [PostReactionController::class, 'update'])
+        ->name('post_reactions.update');
 
     Route::get('/manage_friends', [ManageFriendController::class, 'edit'])
         ->name('manage_friends');

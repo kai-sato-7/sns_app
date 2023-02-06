@@ -7,11 +7,13 @@
 
     @foreach ($posts as $post)
         @include('components.post', [
-            'post_id' => $post->id,
+            'id' => $post->id,
             'username' =>$post->username,
             'title' => $post->title,
             'content' => $post->content,
             'file_name' => $post->file_name,
+            'like' => $post->like,
+            'total_likes' => $post->total_likes,
         ])
     @endforeach
 </x-app-layout>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Post;
+use App\Models\PostReaction;
 use App\Http\Requests\MakePostRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -14,10 +15,17 @@ class PostController extends Controller
 {
     public function edit(Request $request): View
     {
-        $posts = $request->user()->posts->sortByDesc('created_at')->only(['id', 'user_id', 'title', 'content', 'file_name']);
-        foreach ($posts as $post) {
-            $post->username = $request->user()->username;
-        }
+        $posts = $request->user()->posts->sortByDesc('created_at')->values()->map(function ($item) use ($request) {
+            $item->username = $request->user()->username;
+            $item->new_id = 'id'.$item->id;
+            $item->like = PostReaction::where('post_id', $item->id)->where('user_id', $request->user()->id)->value('like');
+            $item->total_likes = 0;
+            $likes = PostReaction::where('post_id', $item->id)->pluck('like')->toArray();
+            foreach ($likes as $like) {
+                $item->total_likes += $like * 2 - 1;
+            }
+            return $item->only(['id', 'new_id', 'username', 'title', 'content', 'file_name', 'like', 'total_likes']);
+        });
         return view('posts', ['posts' => $posts]);
     }
 

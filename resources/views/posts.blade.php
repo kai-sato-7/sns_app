@@ -11,12 +11,27 @@
         </div>
     </form>
     @foreach ($posts as $post)
-        <x-modal name="remove-post-{{ $post->title }}" focusable>
-            <form method="post" action="{{ route('friends.destroy') }}?username={{ $post->id }}" class="p-6">
+        @include('components.post', [
+            'id' => $post['id'],
+            'username' =>$post['username'],
+            'title' => $post['title'],
+            'content' => $post['content'],
+            'file_name' => $post['file_name'],
+            'like' => $post['like'],
+            'total_likes' => $post['total_likes'],
+        ])
+        <div class="text-center">
+            <x-primary-button style="font-size:1em;" x-data="{{ $post['new_id'] }}" x-on:click.prevent="$dispatch('open-modal', 'remove-post-{{ $post['new_id'] }}')">{{ __('Remove') }}</x-primary-button>
+        </div>
+    @endforeach
+
+    @foreach ($posts as $post)
+        <x-modal name="remove-post-{{ $post['new_id'] }}" focusable>
+            <form method="POST" action="{{ route('posts.destroy') }}?id={{ $post['new_id'] }}" class="p-6">
                 @csrf
                 @method('delete')
                 <h2 class="text-lg font-medium text-gray-900">
-                    {{ __('Are you sure you want to remove your friend') }} {{ $post->id }}{{ __('?') }}
+                    {{ __('Are you sure you want to delete your post?') }}
                 </h2>
 
                 <div class="mt-6 flex justify-end">
@@ -25,26 +40,10 @@
                     </x-secondary-button>
 
                     <x-primary-button class="ml-3">
-                        {{ __('Remove Friend') }}
+                        {{ __('Delete Post') }}
                     </x-primary-button>
                 </div>
             </form>
         </x-modal>
-    @endforeach
-
-
-        
-        <!-- <div class=" py-2 text-center">
-            <x-primary-button style="font-size:1em;" x-on:click.prevent="$dispatch('open-modal', 'modal')">{{ __('Remove') }}</x-primary-button>
-        </div> -->
-    @foreach ($posts as $post)
-        @include('components.post', [
-            'post_id' => $post->id,
-            'username' => $post->username,
-            'title' => $post->title,
-            'content' => $post->content,
-            'file_name' => $post->file_name,
-        ])
-        <x-primary-button style="font-size:1em;" x-data="{{ $post->id }}" x-on:click.prevent="$dispatch('open-modal', 'remove-post-{{ $post->title }}')">{{ __('Remove') }}</x-primary-button>
     @endforeach
 </x-app-layout>
