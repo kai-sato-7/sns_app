@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\CommentedPostController;
+use App\Http\Controllers\CommentReactionController;
 use App\Http\Controllers\FeedController;
 use App\Http\Controllers\FriendRequestController;
 use App\Http\Controllers\FriendController;
@@ -35,9 +38,17 @@ Route::middleware('auth')->group(function () {
         ->name('posts.update');
     Route::delete('/posts', [PostController::class, 'destroy'])
         ->name('posts.destroy');
+    
+    Route::get('/post/{id}', [CommentedPostController::class, 'edit'])
+        ->name('post.edit');
+
+    Route::patch('/comments', [CommentController::class, 'update'])
+        ->name('comments.update');
 
     Route::patch('/post_reactions', [PostReactionController::class, 'update'])
         ->name('post_reactions.update');
+    Route::patch('/comment_reactions', [CommentReactionController::class, 'update'])
+        ->name('comment_reactions.update');
 
     Route::get('/manage_friends', [ManageFriendController::class, 'edit'])
         ->name('manage_friends');

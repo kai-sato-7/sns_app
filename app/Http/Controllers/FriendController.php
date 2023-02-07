@@ -24,15 +24,14 @@ class FriendController extends Controller
                 array_push($posts, $post);
             }
         }
-        $posts = collect($posts)->sortByDesc('created_at')->values()->map(function ($item) {
-            $ret = collect($item);
-            $ret->like = PostReaction::where('post_id', $ret->id)->where('user_id', $request->user()->id)->value('like');
+        $posts = collect($posts)->sortByDesc('created_at')->values()->map(function ($item) use ($request) {
+            $item->like = PostReaction::where('post_id', $item->id)->where('user_id', $request->user()->id)->value('like');
             $item->total_likes = 0;
             $likes = PostReaction::where('post_id', $item->id)->pluck('like')->toArray();
             foreach ($likes as $like) {
                 $item->total_likes += $like * 2 - 1;
             }
-            return ret->only(['id', 'username', 'title', 'content', 'file_name', 'like', 'total_likes']);
+            return $item->only(['id', 'username', 'title', 'content', 'file_name', 'like', 'total_likes']);
         });
         return view('friends', ['posts' => $posts]);
     }
