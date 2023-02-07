@@ -4,8 +4,8 @@
             {{ _('(') }}{{ $total_likes }}{{ _(') ') }}{{ $username }}
             <div class="py-2">
                 @if (!empty($content))
-                {{ $content }}
-                <br>
+                    {{ $content }}
+                    <br>
                 @endif
                 <br>
                 @if (!is_null($like))
@@ -22,7 +22,7 @@
                     <x-primary-button name="like" value="0">Dislike</x-primary-button>
                 </form>
                 @if ($indentation < 10)
-                <x-primary-button x-data="" x-on:click.prevent="$dispatch('open-modal', 'make-comment-{{ $id }}')">Reply</x-primary-button>
+                    <x-primary-button x-data="" x-on:click.prevent="$dispatch('open-modal', 'make-comment-{{ $id }}')">Reply</x-primary-button>
                 @endif
             </div>
         </div>
