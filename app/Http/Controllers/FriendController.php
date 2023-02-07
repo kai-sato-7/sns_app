@@ -27,11 +27,13 @@ class FriendController extends Controller
         $posts = collect($posts)->sortByDesc('created_at')->values()->map(function ($item) use ($request) {
             $item->like = PostReaction::where('post_id', $item->id)->where('user_id', $request->user()->id)->value('like');
             $item->total_likes = 0;
+            $item->total_dislikes = 0;
             $likes = PostReaction::where('post_id', $item->id)->pluck('like')->toArray();
             foreach ($likes as $like) {
-                $item->total_likes += $like * 2 - 1;
+                $item->total_likes += $like;
+                $item->total_dislikes += 1 - $like;
             }
-            return $item->only(['id', 'username', 'title', 'content', 'file_name', 'like', 'total_likes']);
+            return $item->only(['id', 'username', 'title', 'content', 'file_name', 'like', 'total_likes', 'total_dislikes']);
         });
         return view('friends', ['posts' => $posts]);
     }

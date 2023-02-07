@@ -12,12 +12,13 @@ class CommentController extends Controller
 {
     public function update(MakeCommentRequest $request): RedirectResponse
     {
-        $parent = Comment::findOr($request->parent_id);
-        if ($parent->exists()) {
-            $parent_path = $parent->path;
+        if ($request->parent_id != -1) {
+            $parent_path = Comment::findOr($request->parent_id)->path;
         } else {
-            $parent_path = '/';
+            $request->parent_id = '';
+            $parent_path = '';
         }
+        
         Comment::create([
             'post_id' => $request->post_id,
             'user_id' => $request->user()->id,

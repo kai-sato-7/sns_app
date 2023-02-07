@@ -1,7 +1,7 @@
 <div class="py-2">
     <div class="max-w-xl mx-auto bg-white overflow-hidden shadow-sm sm:rounded-lg">
         <div class="p-4">
-            {{ _('(') }}{{ $total_likes }}{{ _(') ') }}{{ $username }}
+            {{ $username }}
             <h1 class="text-xl text-center text-gray-800">
                 {{ $title }}
             </h1>
@@ -14,6 +14,19 @@
                     <br>
                 @endif
                 <br>
+                {{ $total_likes }}
+                @if ($total_likes != 1)
+                    {{ __('likes,') }}
+                @else
+                    {{ __('like,') }}
+                @endif
+                {{ $total_dislikes }}
+                @if ($total_dislikes != 1)
+                    {{ __('dislikes') }}
+                @else
+                    {{ __('dislike') }}
+                @endif
+                <br>
                 @if (!is_null($like))
                     @if ($like)
                         {{ __('Liked') }}
@@ -21,7 +34,7 @@
                         {{ __('Disliked') }}
                     @endif
                 @endif
-                <form method="POST" action="{{ route('post_reactions.update') }}?id={{ $id }}" style="display:inline;">
+                <form method="POST" action="{{ route('post_reactions.update', ['id' => $id]) }}" style="display:inline;">
                     @csrf
                     @method('patch')
                     <x-primary-button name="like" value="1">Like</x-primary-button>

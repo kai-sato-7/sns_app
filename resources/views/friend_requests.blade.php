@@ -27,14 +27,14 @@
                 <div class="p-4 text-gray-900 text-lg">
                     {{ $username }} {{ __('sent a friend request.') }}
                 </div>
-                <form method="POST" action="{{ route('friends.update') }}?username={{ $username }}">
+                <form method="POST" action="{{ route('friends.update', ['username' => $username]) }}">
                     @csrf
                     @method('patch')
                     <x-primary-button>
                         {{ __('Accept') }}
                     </x-primary-button>
                 </form>
-                <form method="POST" action="{{ route('friend_requests.destroy') }}?username={{ $username }}">
+                <form method="POST" action="{{ route('friend_requests.destroy', ['username' => $username]) }}">
                     @csrf
                     @method('delete')
                     <x-primary-button>

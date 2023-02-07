@@ -19,6 +19,7 @@
             'file_name' => $post['file_name'],
             'like' => $post['like'],
             'total_likes' => $post['total_likes'],
+            'total_dislikes' => $post['total_dislikes'],
         ])
         <div class="text-center">
             <x-primary-button style="font-size:1em;" x-data="{{ $post['new_id'] }}" x-on:click.prevent="$dispatch('open-modal', 'remove-post-{{ $post['new_id'] }}')">{{ __('Remove') }}</x-primary-button>
@@ -27,7 +28,7 @@
 
     @foreach ($posts as $post)
         <x-modal name="remove-post-{{ $post['new_id'] }}" focusable>
-            <form method="POST" action="{{ route('posts.destroy') }}?id={{ $post['new_id'] }}" class="p-6">
+            <form method="POST" action="{{ route('posts.destroy', ['id' => $post['new_id']]) }}" class="p-6">
                 @csrf
                 @method('delete')
                 <h2 class="text-lg font-medium text-gray-900">

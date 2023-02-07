@@ -35,22 +35,26 @@ class CommentedPostController extends Controller
         $post->username = $post->user->username;
         $post->like = PostReaction::where('post_id', $post->id)->where('user_id', $request->user()->id)->value('like');
         $post->total_likes = 0;
+        $post->total_dislikes = 0;
         $post_likes = PostReaction::where('post_id', $post->id)->pluck('like')->toArray();
         foreach ($post_likes as $like) {
-            $post->total_likes += $like * 2 - 1;
+            $post->total_likes += $like;
+            $post->total_dislikes += 1 - $like;
         }
         foreach ($comments as $comment) {
             $comment->username = $comment->user->username;
             $comment->like = CommentReaction::where('comment_id', $comment->id)->where('user_id', $request->user()->id)->value('like');
             $comment->total_likes = 0;
+            $comment->total_dislikes = 0;
             $comment_likes = CommentReaction::where('comment_id', $comment->id)->pluck('like')->toArray();
             foreach ($comment_likes as $like) {
-                $comment->total_likes += $like * 2 - 1;
+                $comment->total_likes += $like;
+                $comment->total_dislikes += 1 - $like;
             }
             $comment->indentation = substr_count($comment->path, '/') - 1;
-            $comment = $comment->only(['id', 'username', 'content', 'like', 'total_likes', 'indentation']);
+            $comment = $comment->only(['id', 'username', 'content', 'like', 'total_likes', 'total_dislikes', 'indentation']);
         }
-        $post = $post->only(['id', 'username', 'title', 'content', 'file_name', 'like', 'total_likes']);
+        $post = $post->only(['id', 'username', 'title', 'content', 'file_name', 'like', 'total_likes', 'total_dislikes']);
         return view('commented_post', ['post' => $post, 'comments' => $comments]);
     }
 }

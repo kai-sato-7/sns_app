@@ -7,7 +7,7 @@
     <div class="py-2">
         <div class="mx-auto bg-white overflow-hidden shadow-sm sm:rounded-lg" style="max-width:50rem;">
             <div class="p-4">
-                {{ __('(') }}{{ $post['total_likes'] }}{{ __(') ') }}{{ $post['username'] }}
+                {{ $post['username'] }}
                 <h1 class="text-xl text-center text-gray-800">
                     {{ $post['title'] }}
                 </h1>
@@ -20,6 +20,19 @@
                         <br>
                     @endif
                     <br>
+                    {{ $post['total_likes'] }}
+                    @if ($post['total_likes'] != 1)
+                        {{ __('likes,') }}
+                    @else
+                        {{ __('like,') }}
+                    @endif
+                    {{ $post['total_dislikes'] }}
+                    @if ($post['total_dislikes'] != 1)
+                        {{ __('dislikes') }}
+                    @else
+                        {{ __('dislike') }}
+                    @endif
+                    <br>
                     @if (!is_null($post['like']))
                         @if ($post['like'])
                             {{ __('Liked') }}
@@ -27,7 +40,7 @@
                             {{ __('Disliked') }}
                         @endif
                     @endif
-                    <form method="POST" action="{{ route('post_reactions.update') }}?id={{ $post['id'] }}" style="display:inline;">
+                    <form method="POST" action="{{ route('post_reactions.update', ['id' => $post['id']]) }}" style="display:inline;">
                         @csrf
                         @method('patch')
                         <x-primary-button name="like" value="1">Like</x-primary-button>
@@ -44,11 +57,12 @@
             'content' => $comment['content'],
             'like' => $comment['like'],
             'total_likes' => $comment['total_likes'],
+            'total_dislikes' => $comment['total_dislikes'],
             'indentation' => $comment['indentation'],
         ])
         @if ($comment['indentation'] < 10)
             <x-modal name="make-comment-{{ $comment['id'] }}" :show="$errors->makeComment->isNotEmpty()" focusable>
-                <form method="POST" action="{{ route('comments.update') }}?post_id={{ $post['id'] }}&parent_id={{ $comment['id'] }}" class="p-6">
+                <form method="POST" action="{{ route('comments.update', ['post_id' => $post['id'], 'parent_id' => $comment['id']]) }}" class="p-6">
                     @csrf
                     @method('patch')
                     <h2 class="text-lg font-medium text-gray-900">
@@ -77,7 +91,7 @@
         <x-primary-button style="font-size:1em;" x-data="" x-on:click.prevent="$dispatch('open-modal', 'make-comment')">Comment</x-primary-button>
     </div>
     <x-modal name="make-comment" :show="$errors->makeComment->isNotEmpty()" focusable>
-        <form method="POST" action="{{ route('comments.update') }}?post_id={{ $post['id'] }}" class="p-6">
+        <form method="POST" action="{{ route('comments.update', ['post_id' => $post['id'], 'parent_id' => -1]) }}" class="p-6">
             @csrf
             @method('patch')
             <h2 class="text-lg font-medium text-gray-900">

@@ -14,6 +14,7 @@
             'file_name' => $post->file_name,
             'like' => $post->like,
             'total_likes' => $post->total_likes,
+            'total_dislikes' => $post->total_dislikes,
         ])
     @endforeach
 </x-app-layout>

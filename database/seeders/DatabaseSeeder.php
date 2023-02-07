@@ -11,9 +11,7 @@ use Illuminate\Support\Facades\Hash;
 class DatabaseSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
-     *
-     * @return void
+     * Seed the application's database. 5,000 users with 300 posts spanning 1 year
      */
     public function run()
     {

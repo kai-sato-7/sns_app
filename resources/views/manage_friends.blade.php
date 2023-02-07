@@ -20,7 +20,7 @@
 
     @foreach ($usernames as $username)
         <x-modal name="remove-friend-{{ $username }}" focusable>
-            <form method="post" action="{{ route('friends.destroy') }}?username={{ $username }}" class="p-6">
+            <form method="post" action="{{ route('friends.destroy', ['username' => $username]) }}" class="p-6">
                 @csrf
                 @method('delete')
                 <h2 class="text-lg font-medium text-gray-900">
