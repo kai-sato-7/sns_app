@@ -33,7 +33,7 @@ class FriendController extends Controller
                 $item->total_likes += $like;
                 $item->total_dislikes += 1 - $like;
             }
-            return $item->only(['id', 'username', 'title', 'content', 'file_name', 'like', 'total_likes', 'total_dislikes']);
+            return $item->only(['id', 'username', 'title', 'content', 'file_name', 'like', 'total_likes', 'total_dislikes', 'created_at']);
         });
         return view('friends', ['posts' => $posts]);
     }

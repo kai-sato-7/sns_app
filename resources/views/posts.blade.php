@@ -20,6 +20,7 @@
             'like' => $post['like'],
             'total_likes' => $post['total_likes'],
             'total_dislikes' => $post['total_dislikes'],
+            'timestamp' => $post['created_at'],
         ])
         <div class="text-center">
             <x-primary-button style="font-size:1em;" x-data="{{ $post['new_id'] }}" x-on:click.prevent="$dispatch('open-modal', 'remove-post-{{ $post['new_id'] }}')">{{ __('Remove') }}</x-primary-button>

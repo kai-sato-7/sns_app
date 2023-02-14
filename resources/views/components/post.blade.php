@@ -2,6 +2,7 @@
     <div class="max-w-xl mx-auto bg-white overflow-hidden shadow-sm sm:rounded-lg">
         <div class="p-4">
             {{ $username }}
+            <span style="float:right;">{{ $timestamp }}</span>
             <h1 class="text-xl text-center text-gray-800">
                 {{ $title }}
             </h1>

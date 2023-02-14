@@ -54,7 +54,7 @@ class CommentedPostController extends Controller
             $comment->indentation = substr_count($comment->path, '/') - 1;
             $comment = $comment->only(['id', 'username', 'content', 'like', 'total_likes', 'total_dislikes', 'indentation']);
         }
-        $post = $post->only(['id', 'username', 'title', 'content', 'file_name', 'like', 'total_likes', 'total_dislikes']);
+        $post = $post->only(['id', 'username', 'title', 'content', 'file_name', 'like', 'total_likes', 'total_dislikes', 'created_at']);
         return view('commented_post', ['post' => $post, 'comments' => $comments]);
     }
 }

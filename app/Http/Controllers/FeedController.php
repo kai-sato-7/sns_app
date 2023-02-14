@@ -23,7 +23,7 @@ class FeedController extends Controller
                 $post->total_likes += $like;
                 $post->total_dislikes += 1 - $like;
             }
-            $post = $post->only(['id', 'username', 'title', 'content', 'file_name', 'like', 'total_likes', 'total_dislikes']);
+            $post = $post->only(['id', 'username', 'title', 'content', 'file_name', 'like', 'total_likes', 'total_dislikes', 'created_at']);
         }
         return view('feed', ['posts' => $posts]);
     }

@@ -15,6 +15,7 @@
             'like' => $post->like,
             'total_likes' => $post->total_likes,
             'total_dislikes' => $post->total_dislikes,
+            'timestamp' => $post->created_at,
         ])
     @endforeach
 </x-app-layout>

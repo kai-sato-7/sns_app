@@ -8,6 +8,7 @@
         <div class="mx-auto bg-white overflow-hidden shadow-sm sm:rounded-lg" style="max-width:50rem;">
             <div class="p-4">
                 {{ $post['username'] }}
+                <span style="float:right;">{{ $post['created_at'] }}</span>
                 <h1 class="text-xl text-center text-gray-800">
                     {{ $post['title'] }}
                 </h1>
