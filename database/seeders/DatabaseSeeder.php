@@ -76,30 +76,5 @@ class DatabaseSeeder extends Seeder
                 ]);
             }
         }
-
-        // Relation::create([
-        //     'user_id' => 1,
-        //     'friend_user_id' => 2,
-        // ]);
-        // Relation::create([
-        //     'user_id' => 2,
-        //     'friend_user_id' => 1,
-        // ]);
-        // Relation::create([
-        //     'user_id' => 1,
-        //     'friend_user_id' => 3,
-        // ]);
-        // Relation::create([
-        //     'user_id' => 3,
-        //     'friend_user_id' => 1,
-        // ]);
-        // Relation::create([
-        //     'user_id' => 3,
-        //     'friend_user_id' => 2,
-        // ]);
-        // Relation::create([
-        //     'user_id' => 2,
-        //     'friend_user_id' => 3,
-        // ]);
     }
 }
