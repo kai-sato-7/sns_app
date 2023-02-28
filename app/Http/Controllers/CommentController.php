@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\Post;
 use App\Http\Requests\MakeCommentRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -12,19 +13,20 @@ class CommentController extends Controller
 {
     public function update(MakeCommentRequest $request): RedirectResponse
     {
-        if ($request->parent_id != -1) {
-            $parent_path = Comment::findOr($request->parent_id)->path;
-        } else {
-            $request->parent_id = '';
-            $parent_path = '';
-        }
+        $comment = new Comment;
+        $comment->user_id = $request->user()->id;
+        $comment->content = $request->content;
         
-        Comment::create([
-            'post_id' => $request->post_id,
-            'user_id' => $request->user()->id,
-            'content' => $request->content,
-            'path' => $parent_path.$request->parent_id.'/',
-        ]);
+        if ($request->parent_id != -1) {
+            $parent_comment = Comment::find($request->parent_id);
+            $comment->level = $parent_comment->level + 1;
+            $parent_comment->comments()->save($comment);
+        } else {
+            $comment->level = 1;
+            $parent_post = Post::find($request->post_id);
+            $parent_post->comments()->save($comment);
+        }
+
         return back();
     }
 }

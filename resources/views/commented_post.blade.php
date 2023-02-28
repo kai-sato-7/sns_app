@@ -59,9 +59,9 @@
             'like' => $comment['like'],
             'total_likes' => $comment['total_likes'],
             'total_dislikes' => $comment['total_dislikes'],
-            'indentation' => $comment['indentation'],
+            'level' => $comment['level'],
         ])
-        @if ($comment['indentation'] < 10)
+        @if ($comment['level'] < 9)
             <x-modal name="make-comment-{{ $comment['id'] }}" :show="$errors->makeComment->isNotEmpty()" focusable>
                 <form method="POST" action="{{ route('comments.update', ['post_id' => $post['id'], 'parent_id' => $comment['id']]) }}" class="p-6">
                     @csrf

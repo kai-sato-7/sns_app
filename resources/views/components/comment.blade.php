@@ -1,5 +1,5 @@
 <div class="py-2">
-    <div class="mx-auto bg-white overflow-hidden shadow-sm sm:rounded-lg" style="max-width:{{ 50 - $indentation * 2.5 }}rem; transform:translate({{ $indentation * 1.25 }}rem)">
+    <div class="mx-auto bg-white overflow-hidden shadow-sm sm:rounded-lg" style="max-width:{{ 50 - $level * 2.5 }}rem; transform:translate({{ $level * 1.25 }}rem)">
         <div class="p-4">
             {{ $username }}
             <div class="py-2">
@@ -34,7 +34,7 @@
                     <x-primary-button name="like" value="1">Like</x-primary-button>
                     <x-primary-button name="like" value="0">Dislike</x-primary-button>
                 </form>
-                @if ($indentation < 10)
+                @if ($level < 9)
                     <x-primary-button x-data="" x-on:click.prevent="$dispatch('open-modal', 'make-comment-{{ $id }}')">Reply</x-primary-button>
                 @endif
             </div>
