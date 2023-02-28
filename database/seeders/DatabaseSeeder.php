@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
     {
         File::cleanDirectory('storage/app/public/images');
         
-        for ($i = 0; $i < 50; $i++) { // temp
+        for ($i = 0; $i < 5000; $i++) {
             User::create([
                 'username' => 'user'.$i,
                 'password' => Hash::make('password'),
@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
         date_default_timezone_set('Asia/Singapore');
         $now = time();
 
-        for ($i = 0; $i < 10; $i++) { // temp
+        for ($i = 0; $i < 300; $i++) {
             $lipsum = '';
             while ($lipsum == '') {
                 try {
@@ -44,11 +44,11 @@ class DatabaseSeeder extends Seeder
             $rand_num = mt_rand(1, 2);
             $file_path = ($rand_num == 1 ? '/Users/kaisato/Sites/sns-app/database/seeders/cats/' : '/Users/kaisato/Sites/sns-app/database/seeders/dogs/');
             $file_name = ($rand_num == 1 ? 'cat' : 'dog');
-            $file_name = $file_name.'.'.strval(mt_rand(1, 4000)).'.jpg';
+            $file_name = $file_name.'.'.strval(mt_rand(1, 300)).'.jpg';
             $rand_num = mt_rand(1, 3);
             if ($rand_num == 1) {
                 Post::create([
-                    'user_id' => rand(1, 50), // temp
+                    'user_id' => rand(1, 5000),
                     'title' => $title,
                     'content' => $content,
                     'created_at' => date('Y-m-d H:i:s', mt_rand($now - 31536000, $now)),
@@ -58,7 +58,7 @@ class DatabaseSeeder extends Seeder
                 $file->store('public/images');
                 $file_name = $file->hashName();
                 Post::create([
-                    'user_id' => rand(1, 50), // temp
+                    'user_id' => rand(1, 5000),
                     'title' => $title,
                     'file_name' => $file_name,
                     'created_at' => date('Y-m-d H:i:s', mt_rand($now - 31536000, $now)),
@@ -68,7 +68,7 @@ class DatabaseSeeder extends Seeder
                 $file->store('public/images');
                 $file_name = $file->hashName();
                 Post::create([
-                    'user_id' => rand(1, 50), // temp
+                    'user_id' => rand(1, 5000),
                     'title' => $title,
                     'content' => $content,
                     'file_name' => $file_name,
